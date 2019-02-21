@@ -1,30 +1,54 @@
 import time
+import sys
 
 hours_of_day = time.strftime("%H", time.localtime())
-hours_of_day = int (hours_of_day)
+hours = int (hours_of_day)
 
-hello = "Доброго " #для русской части
+# Русская часть
 
-if 6 > hours_of_day >= 0 :
-	case = "night"
-	case_ru = "ночи"
-	hello = "Доброй "
+def hello_rus():
+	
+	night = "Доброй ночи!"
+	morning = "Доброго утра!"
+	day = "Доброго дня!"
+	evening = "Доброго вечера!"
 
-elif 12 > hours_of_day >= 6 :
-	case = "morning"
-	case_ru = "утра"
+	times = {0:night,1:night,2:night,3:night, 4:night, 5:night,
+		6:morning, 7:morning, 8:morning, 9:morning, 10:morning, 11:morning,
+		12:day, 13:day, 14:day, 15:day, 16:day, 17:day, 
+		18:evening, 19:evening, 20:evening, 21:evening, 22:evening, 23:evening}
+		
+	print (times.get(hours))
 
-elif 18 > hours_of_day >= 12 :
-	case = "day"
-	case_ru = "дня"
+#Английская часть
 
-elif 24 > hours_of_day >= 18 :
-	case = "evening"
-	case_ru = "вечера"
+def hello_eng():
+	
+	night = "Good night!"
+	morning = "Good morning!"
+	day = "Good day!"
+	evening = "Good evening!"
+	
+	times = {0:night,1:night,2:night,3:night, 4:night, 5:night,
+		6:morning, 7:morning, 8:morning, 9:morning, 10:morning, 11:morning,
+		12:day, 13:day, 14:day, 15:day, 16:day, 17:day, 
+		18:evening, 19:evening, 20:evening, 21:evening, 22:evening, 23:evening}
+	
+	print (times.get(hours))
 
-massage = "Good " + case + ", Max!"
-massage_ru = hello + case_ru + ", Макс!"
-
-print(massage)
-print(massage_ru)
+#Проверка параметров
+rus_verse = {'-ru', '-rus'}
+eng_verse = {'-en', '-eng'}
+	
+if __name__ == "__main__":
+	if len(sys.argv) > 1:	
+		if sys.argv[1] in rus_verse:
+			hello_rus()
+		elif sys.argv[1] in eng_verse:
+			hello_eng()
+		else:
+			print("Пока не завезли=( так что будет English")
+			hello_eng()
+	else:
+		hello_eng()
 
