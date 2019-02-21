@@ -38,7 +38,7 @@ def hello_eng():
 
 #Проверка параметров
 rus_verse = {'-ru', '-rus'}
-eng_verse = {'-en', '-eng', 'None'}
+eng_verse = {'-en', '-eng'}
 	
 if __name__ == "__main__":
 	if len(sys.argv) > 1:	
