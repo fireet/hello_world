@@ -1,31 +1,37 @@
-import time
 import sys
+import time
 
-hours_of_day = time.strftime("%H", time.localtime())
-hours = int (hours_of_day) // 6
-
-# функция задает параметры аргумента и фразы приветствия
-def hello_uni(var1, var2, night, morning, day, evening):
-	verse = {var1, var2}	
-	times.update ({0:night,1:morning,2:day,3:evening})
-	if sys.argv[1] in verse:
-		print (times.get(hours))
-		exit()
-#Проверка параметров
-verse = {}
-times = {}
+languages = {
+	'ru' : ['доброй ночи','доброго утра','доброго дня','доброго вечера'],
+	'en' : ['good night', 'good morning', 'good day', 'good night']
+	}
 
 	
+def language_type():
+	if param in languages:
+		hello_parts = languages[param]
+		return hello_parts
+	else:
+		print('Данный язык недоступен.\nпока что будет English')
+		hello_parts = languages['en']
+		return hello_parts
+
+def get_this_time():
+	hours = int(time.strftime("%H", time.localtime()))//6
+	return hours
+
+def hello_time_print():
+	massege = hello_parts[hours]
+	print (massege.capitalize()+"!")
+
 if __name__ == "__main__":
 	if len(sys.argv) > 1:	
-		hello_uni('-ru', '-rus', 'Доброй ночи!', 'Доброго утра!', 'Доброго дня!', 'Доброго вечера!')
-		hello_uni('-en', '-eng', 'Good night!', 'Good morning!', 'Good day!', 'Good evening!')
-		if sys.argv[1] != verse:
-			times.update ({0:'Good night!', 1:'Good morning!', 2:'Good day!', 3:'Good evening!'})
-			print("такого языка пока не завезли, так что будет English")
-			print (times.get(hours))	
+		param = sys.argv[1]			
+		param = param.replace('-','')
 		
 	else:
-		times.update ({0:'Good night!', 1:'Good morning!', 2:'Good day!', 3:'Good evening!'})
-		print (times.get(hours))
+		param = 'en'
 
+hello_parts = language_type()
+hours = get_this_time()
+hello_time_print()
