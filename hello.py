@@ -7,31 +7,23 @@ languages = {
 	}
 
 	
-def language_type():
+def language_type(param):
 	if param in languages:
-		hello_parts = languages[param]
-		return hello_parts
+		return languages[param]
 	else:
-		print('Данный язык недоступен.\nпока что будет English')
-		hello_parts = languages['en']
-		return hello_parts
+		return languages['en']
 
 def get_this_time():
-	hours = int(time.strftime("%H", time.localtime()))//6
-	return hours
+	return int(time.strftime("%H", time.localtime()))//6
+	
 
-def hello_time_print():
-	massege = hello_parts[hours]
-	print (massege.capitalize()+"!")
+def hello_time (hello_parts, hours):
+	return hello_parts[hours].capitalize()+"!"
 
 if __name__ == "__main__":
-	if len(sys.argv) > 1:	
-		param = sys.argv[1]			
-		param = param.replace('-','')
-		
-	else:
-		param = 'en'
+	param = sys.argv[1].replace('-','') if len(sys.argv) > 1 else 'en'
+	
 
-hello_parts = language_type()
+hello_parts = language_type(param.lower())
 hours = get_this_time()
-hello_time_print()
+print (hello_time (hello_parts, hours))
