@@ -1,10 +1,18 @@
 import sys
 import time
 
-languages = {
-	'ru' : ['доброй ночи','доброго утра','доброго дня','доброго вечера'],
-	'en' : ['good night', 'good morning', 'good day', 'good night']
-	}
+languages = dict()
+
+def languages_dict(name_file):
+	file = open('library/'+ name_file)
+	onstring = file.read().split('\n')[:-1]
+	for item in onstring:
+		key = item.split("	")[0]
+		value = item.split("	")[1:]
+		languages[key] = value
+
+	file.close()
+	return value
 
 	
 def language_type(param):
@@ -23,7 +31,8 @@ def hello_time (hello_parts, hours):
 if __name__ == "__main__":
 	param = sys.argv[1].replace('-','') if len(sys.argv) > 1 else 'en'
 	
-
+languages_dict('languages.txt')
 hello_parts = language_type(param.lower())
 hours = get_this_time()
+
 print (hello_time (hello_parts, hours))
