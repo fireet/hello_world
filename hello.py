@@ -4,7 +4,7 @@ import time
 languages = dict()
 
 def languages_dict(name_file):
-	file = open('library/'+ name_file)
+	file = open('library/'	+ name_file)
 	onstring = file.read().split('\n')[:-1]
 	for item in onstring:
 		key = item.split("	")[0]
