@@ -13,7 +13,7 @@ def get_time():
 	return int(time.strftime('%H', time.localtime()))//6
 
 
-def lang_open_file(name_file,keys):
+def languages_hello(name_file,keys):
 
 	'''Принимает путь к файлу с словарём и сокращение языка.
 		Разбирает файл словаря.
@@ -27,11 +27,11 @@ def lang_open_file(name_file,keys):
 				if keys in pul[0]:
 					return pul[1:]
 			keys = get_key_or_exit('Введите другой язык')
-			return lang_open_file(name_file,keys)
+			return languages_hello(name_file,keys)
 
 	except FileNotFoundError:
 		name_file = get_key_or_exit('Введите правильный путь словаря')
-		return lang_open_file(name_file ,keys)
+		return languages_hello(name_file ,keys)
 	
 		
 def get_key_or_exit(message):
@@ -58,5 +58,5 @@ def hello(func1,func2):
 if __name__ == '__main__':
 	print(hello(
 				func2 = get_time(),
-				func1 = lang_open_file(args.dict,args.lang)
+				func1 = languages_hello(args.dict,args.lang)
 				))
