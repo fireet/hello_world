@@ -23,9 +23,9 @@ def languages_hello(name_file,keys):
 
 		with open(name_file.rstrip(' '), 'r') as read_file:
 			for item in read_file.readlines():
-				pul = item.strip(r'\n').split(',')
-				if keys in pul[0]:
-					return pul[1:]
+				data = item.strip('\n').split(',')
+				if keys in data[0]:
+					return data[1:]
 			keys = get_key_or_exit('Введите другой язык')
 			return languages_hello(name_file,keys)
 
@@ -40,23 +40,18 @@ def get_key_or_exit(message):
 		возвращает ввод или выходит'''
 
 	key = input(message+' или exit:\n')
-	if key.lower() == 'exit' or not key:
+	if key.lower() == 'exit':
 		print('До свидания!')
 		exit()
+	elif not key:
+		print("Введено пустое значение")
+		return get_key_or_exit(message)
 	else:
 		return key
 
 
-def hello(func1,func2):
-
-	'''возвращает приветствие.
-		func1 - функция с списком значений,
-		func2 - функция с индексом'''
-
-	return func1[func2].capitalize()+'!'
+data = languages_hello(args.dict,args.lang)
+key = get_time()
 
 if __name__ == '__main__':
-	print(hello(
-				func2 = get_time(),
-				func1 = languages_hello(args.dict,args.lang)
-				))
+	print("{}!".format(data[key].capitalize()))
