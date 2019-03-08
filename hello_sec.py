@@ -47,7 +47,6 @@ def get_key_or_exit(message):
 	else:
 		return key
 
-
 data = languages_hello(args.dict,args.lang)
 key = get_time()
 
