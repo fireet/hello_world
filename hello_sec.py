@@ -6,52 +6,76 @@ parser.add_argument('-l','--lang', type = str, default = 'en')
 parser.add_argument('-d','--dict', type = str, default = 'library/languages.txt')
 args = parser.parse_args()
 
+
 def get_time():
 
-	'''Возвращает текущее время компьютера'''
+		'''Возвращает текущее время компьютера'''
 
-	return int(time.strftime('%H', time.localtime()))//6
+		return int(time.strftime('%H', time.localtime()))//6
+	
+	
+def languages_hello(name_file):
+	'''Принимает путь к файлу с словарём.
+		Разбирает файл и возвращает словарь'''
+	count = 0
+
+	while count < count_max:
+		if name_file != "exit":
+			count +=1		
+			try:	
+				with open(name_file.rstrip(' '), 'r') as read_file:	
+					data = {}			
+					for item in read_file.readlines():
+						space = item.strip('\n').split(',')					
+						key = space[0]
+						value = space[1:]
+						data[key] = value	
+					return data
+			except FileNotFoundError:
+				name_file = get_key_or_exit('Введите правильный путь словаря')
+		else:
+			return
 
 
-def languages_hello(name_file,keys):
+def find_lang(data,key):
+	'''выполняет аоиск нужного языка по ключу.
+		возвращает значения приветсвий'''
+	count = 0
+	while count < count_max:
+		if data and key != "exit":
+			count +=1
+			try:
+				return data[key]
+			except KeyError:
+				key = get_key_or_exit("введите другой язык")
+		else:
+			return
 
-	'''Принимает путь к файлу с словарём и сокращение языка.
-		Разбирает файл словаря.
-		Возвращает варианты ответов на выбраном языке.'''
-	while name_file and keys != None:
-		try:	
-			with open(name_file.rstrip(' '), 'r') as read_file:
-				for item in read_file.readlines():
-					data = item.strip('\n').split(',')
-					if keys in data[0]:
-						return data[1:]
-				keys = get_key_or_exit('Введите другой язык')
-				return languages_hello(name_file,keys)
-
-		except FileNotFoundError:
-			name_file = get_key_or_exit('Введите правильный путь словаря')
-			return languages_hello(name_file, keys)
 
 def get_key_or_exit(message):
-
 	'''	просит ввести верное значение.
 		возвращает ввод или выходит'''
+	while True:
+		key = input(message+' или exit:\n')
+		if key.lower == 'exit':
+			return 'exit'
+		elif not key:
+			print("Введено пустое значение")
+			return
+		else:
+			return key
 
-	key = input(message+' или exit:\n')
-	if not key:
-		print("Введено пустое значение")
-		return get_key_or_exit(message)
-	elif key == 'exit':
-		print('Пока-пока')
-		return
-	else:
-		return key
-
-data = languages_hello(args.dict,args.lang)
+count_max = 5
+data = languages_hello(args.dict)
+result = find_lang(data,args.lang)
 key = get_time()
 
+
 if __name__ == '__main__':
-	while data and key != None:
-		print("{}!".format(data[key].capitalize()))
-		break
+	
+	if result and key != None:
+		print("{}!".format(result[key].capitalize()))
+	else:
+		print("ну, может в другой раз")
+		
 		
