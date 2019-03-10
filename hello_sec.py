@@ -8,74 +8,82 @@ args = parser.parse_args()
 
 
 def get_time():
-
 		'''Возвращает текущее время компьютера'''
-
 		return int(time.strftime('%H', time.localtime()))//6
-	
-	
+
+
+def counter(func):
+	def wrapped(key):
+		count_max = 5
+		count = 0
+		while count < count_max:
+			count += 1
+			if key == 'exit':
+				return
+			elif func(key) == None:
+				return	
+			elif func(key) == 'DictProblem':
+				key = get_key_or_exit('Введите путь к словарю')
+			elif func(key) == 'KeyProblem':
+				key = get_key_or_exit('Введите другой язык')
+			else:
+				return func(key)
+	return wrapped
+
+
+@counter	
 def languages_hello(name_file):
 	'''Принимает путь к файлу с словарём.
-		Разбирает файл и возвращает словарь'''
-	count = 0
-
-	while count < count_max:
-		if name_file != "exit":
-			count +=1		
-			try:	
-				with open(name_file.rstrip(' '), 'r') as read_file:	
-					data = {}			
-					for item in read_file.readlines():
-						space = item.strip('\n').split(',')					
-						key = space[0]
-						value = space[1:]
-						data[key] = value	
-					return data
-			except FileNotFoundError:
-				name_file = get_key_or_exit('Введите правильный путь словаря')
-		else:
-			return
+		Разбирает файл и возвращает словарь'''	
+	try:
+		with open(name_file.rstrip(' '), 'r') as read_file:	
+			data = {}			
+			for item in read_file.readlines():
+				space = item.strip('\n').split(',')					
+				key = space[0]
+				value = space[1:]
+				data[key] = value	
+			return data
+	except FileNotFoundError:
+		return 'DictProblem'
 
 
-def find_lang(data,key):
-	'''выполняет аоиск нужного языка по ключу.
+@counter
+def find_lang(key):
+	'''выполняет поиск нужного языка по ключу.
 		возвращает значения приветсвий'''
-	count = 0
-	while count < count_max:
-		if data and key != "exit":
-			count +=1
-			try:
-				return data[key]
-			except KeyError:
-				key = get_key_or_exit("введите другой язык")
-		else:
-			return
+	if result == None:
+		return
+	try:
+		return result[key]
+	except KeyError:
+		return 'KeyProblem'
+
+
 
 
 def get_key_or_exit(message):
 	'''	просит ввести верное значение.
 		возвращает ввод или выходит'''
-	while True:
-		key = input(message+' или exit:\n')
-		if key.lower == 'exit':
-			return 'exit'
-		elif not key:
-			print("Введено пустое значение")
-			return
-		else:
-			return key
+	key = input(message+' или exit:\n')
+	if key.lower == 'exit':
+		return 'exit'
+	elif not key:
+		print("Введено пустое значение")
+		return 'NotKey'
+	else:
+		return key
 
-count_max = 5
-data = languages_hello(args.dict)
-result = find_lang(data,args.lang)
 key = get_time()
-
+result = languages_hello(args.dict)
+data = find_lang(args.lang)
 
 if __name__ == '__main__':
-	
-	if result and key != None:
-		print("{}!".format(result[key].capitalize()))
+	if result and data != None:
+		print("{}!".format(data[key].capitalize()))
 	else:
-		print("ну, может в другой раз")
+		print('Выходим') 
+
+
 		
 		
