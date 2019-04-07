@@ -12,26 +12,23 @@ def get_time():
 		return int(time.strftime('%H', time.localtime()))//6
 
 
-def counter(func):
+def counter(func,count_max = 5):
 	def wrapped(key):
-		count_max = 5
 		count = 0
 		while count < count_max:
-			count += 1
+			count +=1
 			if key == 'exit':
 				return
 			elif func(key) == None:
-				return	
-			elif func(key) == 'DictProblem':
-				key = get_key_or_exit('Введите путь к словарю')
-			elif func(key) == 'KeyProblem':
-				key = get_key_or_exit('Введите другой язык')
+				return
+			elif type(func(key)) is str:	
+				key = get_key_or_exit(func(key))
 			else:
 				return func(key)
 	return wrapped
 
 
-@counter	
+@counter
 def languages_hello(name_file):
 	'''Принимает путь к файлу с словарём.
 		Разбирает файл и возвращает словарь'''	
@@ -40,37 +37,36 @@ def languages_hello(name_file):
 			data = {}			
 			for item in read_file.readlines():
 				space = item.strip('\n').split(',')					
-				key = space[0]
-				value = space[1:]
+				key, *value = space
 				data[key] = value	
 			return data
-	except FileNotFoundError:
-		return 'DictProblem'
+	except (FileNotFoundError, AttributeError):
+		return 'Введите другой адрес словаря'
 
 
 @counter
 def find_lang(key):
 	'''выполняет поиск нужного языка по ключу.
 		возвращает значения приветсвий'''
-	if result == None:
-		return
-	try:
-		return result[key]
+	try:		
+		if result == None:
+			return
+		else:
+			return result[key]
 	except KeyError:
-		return 'KeyProblem'
-
+		return 'Введите другой язык'
 
 
 
 def get_key_or_exit(message):
 	'''	просит ввести верное значение.
 		возвращает ввод или выходит'''
-	key = input(message+' или exit:\n')
+	key = input(message + ' или exit:\n')
 	if key.lower == 'exit':
 		return 'exit'
 	elif not key:
 		print("Введено пустое значение")
-		return 'NotKey'
+		return
 	else:
 		return key
 
