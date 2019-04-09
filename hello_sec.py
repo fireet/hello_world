@@ -32,10 +32,10 @@ def counter(func,count_max = 5):
 			count +=1
 			if key == 'exit':
 				return
-			elif type(func(key)) is str:	
-				key = get_key_or_exit(func(key))
+			elif type(func(key)) == list:
+				return func(key)	
 			else:
-				return func(key)
+				key = get_key_or_exit(func(key))
 	return wrapped
 	
 
@@ -50,7 +50,8 @@ def read_file(name_file):
 	except (FileNotFoundError, AttributeError):
 		return 'Введите другой адрес словаря'
 
-@exit_deko
+
+@exit_deko #если файл так и не найден, функцию пропускаем
 def languages_hello(space_file):
 	'''Функция разбирает файл и возвращает словарь'''	
 	data = {}			
@@ -84,6 +85,7 @@ def get_key_or_exit(message):
 		return
 	else:
 		return key
+
 
 def prepare_to_print():
 	"""Функция форматирует данные перед печатью"""
