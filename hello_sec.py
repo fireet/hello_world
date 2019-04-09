@@ -8,51 +8,66 @@ args = parser.parse_args()
 
 
 def get_time():
-		'''Возвращает текущее время компьютера'''
-		return int(time.strftime('%H', time.localtime()))//6
+	'''Возвращает текущее время компьютера'''
+	return int(time.strftime('%H', time.localtime()))//6
 
-
+def exit_deko(func):
+	"""Декоратор проверяющий значение ключа,
+	если ключа нет - пропускает функцию"""
+	def wrap(key):
+		if key != None:
+			try:
+				return func(key)
+			except TypeError:
+				return
+	return wrap
+	
 def counter(func,count_max = 5):
+	"""Декоратор отвечающий за проверку введенных данных, 
+	при введении 'exit' или 
+	превышении количества попыток - возвращает'None'"""
 	def wrapped(key):
 		count = 0
 		while count < count_max:
 			count +=1
 			if key == 'exit':
 				return
-			elif func(key) == None:
-				return
 			elif type(func(key)) is str:	
 				key = get_key_or_exit(func(key))
 			else:
 				return func(key)
 	return wrapped
+	
 
 
 @counter
-def languages_hello(name_file):
-	'''Принимает путь к файлу с словарём.
-		Разбирает файл и возвращает словарь'''	
+def read_file(name_file):
+	"""Функция отвечает за правильное чтение файла"""
 	try:
-		with open(name_file.rstrip(' '), 'r') as read_file:	
-			data = {}			
-			for item in read_file.readlines():
-				space = item.strip('\n').split(',')					
-				key, *value = space
-				data[key] = value	
-			return data
+		with open(name_file.rstrip(' '), 'r') as read_file:
+			space = read_file.readlines()
+			return space
 	except (FileNotFoundError, AttributeError):
 		return 'Введите другой адрес словаря'
 
+@exit_deko
+def languages_hello(space_file):
+	'''Функция разбирает файл и возвращает словарь'''	
+	data = {}			
+	for item in space_file:
+		space = item.strip('\n').split(',')					
+		key, *value = space
+		data[key] = value	
+	return data
+	
 
+@exit_deko
 @counter
 def find_lang(key):
 	'''выполняет поиск нужного языка по ключу.
 		возвращает значения приветсвий'''
 	try:		
-		if result == None:
-			return
-		else:
-			return result[key]
+		return result[key]
 	except KeyError:
 		return 'Введите другой язык'
 
@@ -70,16 +85,21 @@ def get_key_or_exit(message):
 	else:
 		return key
 
-key = get_time()
-result = languages_hello(args.dict)
+def prepare_to_print():
+	"""Функция форматирует данные перед печатью"""
+	result = '{}!'.format(data[key].capitalize())
+	return result
+
+
+file_name  = read_file(args.dict)
+result = languages_hello(file_name)
 data = find_lang(args.lang)
+key = get_time()
 
 if __name__ == '__main__':
-	if result and data != None:
-		print("{}!".format(data[key].capitalize()))
+	
+	if data and key != None:
+		message = prepare_to_print()
+		print(message)
 	else:
 		print('Выходим') 
-
-
-		
-		
