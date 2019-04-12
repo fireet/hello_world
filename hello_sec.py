@@ -1,5 +1,7 @@
+
 import time
 import argparse
+import hello_dict_sec
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-l','--lang', type = str, default = 'en')
@@ -92,6 +94,10 @@ def prepare_to_print():
 	result = '{}!'.format(data[key].capitalize())
 	return result
 
+def help_to_us():
+	answer = input("вы хотите добавить новый язык? y/n\n")
+	if answer.lower() == 'y':
+		hello_dict_sec.new_lang(input('Введите путь словаря:\n'))
 
 file_name  = read_file(args.dict)
 result = languages_hello(file_name)
@@ -103,5 +109,6 @@ if __name__ == '__main__':
 	if data and key != None:
 		message = prepare_to_print()
 		print(message)
+		help_to_us()
 	else:
 		print('Выходим') 
