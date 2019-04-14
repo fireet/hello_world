@@ -94,18 +94,23 @@ def prepare_to_print():
 	result = '{}!'.format(data[key].capitalize())
 	return result
 
-def help_to_us():
-	answer = input("вы хотите добавить новый язык? y/n\n")
-	if answer.lower() == 'y':
-		hello_dict_sec.new_lang(input('Введите путь словаря:\n'))
 
-file_name  = read_file(args.dict)
-result = languages_hello(file_name)
-data = find_lang(args.lang)
-key = get_time()
+def help_to_us():
+	'''Функция запрашивет желание записать новый язык и вызывает функцию из модуля''' 
+	answer = input("вы хотите добавить новый язык? y/n\n").lower()
+	if answer == 'y':
+		return hello_dict_sec.new_lang(args.dict)
+	elif answer == 'n':
+		return
+	else:
+		print('Введено неверное значение')
+
 
 if __name__ == '__main__':
-	
+	file_name  = read_file(args.dict)
+	result = languages_hello(file_name)
+	data = find_lang(args.lang)
+	key = get_time()	
 	if data and key != None:
 		message = prepare_to_print()
 		print(message)

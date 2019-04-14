@@ -1,64 +1,81 @@
 import re
 
 
-def mini_name():
-	mini = input('Введите сокращение языка(2 буквы):\n')
-	if len(mini) != 2:
-		print('Вводимая строка должна состоять из 2х символов')
-		return mini_name()
+"""работает только импортированным"""
+
+def __read_language_file(name_file):
+	'''читает файл построчно, возвращает файл в переменную'''
+	with open(name_file) as f:
+		return f.readlines()
+
+
+def __wright_language_file(name_file, new_language):
+	'''записывает новые данные в словарь'''
+	with open(name_file, 'a') as f:
+		f.write(new_language)
+		print('Запись заверешена, Спасибо')
+
+
+def __mini_name():
+	'''запрашивает ввод сокращения'''
+
+	print('Вводимая строка должна состоять из 2х символов')
+	mini = input('Введите сокращение языка:\n')
+	if len(mini)>2:
+		mini = mini[:2]
+		print('выбрано сокращение',mini)
 	return mini
 
-def new_hello_words():
+
+def __find_mini(name_file, mini_name):
+	'''функция проверяет значение сокращения в файле словаря'''
+	for line in name_file:
+		if mini_name in line[:2]:
+			print('сокращение уже есть')
+			return ''
+		else:
+			return 
+
+def __new_hello_words(mini_name):
+	'''Функция принимает ввод 4х приветствий''' 
 	space_of_hello = ['good night', 'good morning', 'good day', 'good evening']
 	new_hello = []
-	new_hello.append(mini_name())
+	new_hello.append(mini_name)
 	for item in space_of_hello:
 		item = input('Введите {}:\n'.format(item))
 		new_hello.append(item)
 	return new_hello
 
 
-
-def read_language_file(name_file,key):
-	try:
-		with open(name_file) as f:
-			for line in f.readlines():
-				if key in line[0:3]:
-					print('Нельзя создать')
-					return False
-	except FileNotFoundError:
-		new_language_file(name_file)
-
-def new_language_file(name_file):
-	with open(name_file, 'w') as f:
-		print('Создан новый файл по адресу {}'.format(name_file))
-
-def to_str(data):
+def __to_str(data):
+	'''Функция преобразует данные нового словаря в строку'''
 	data = re.sub("[']",'',str(data).strip('[]').replace(' ', ''))+'\n'
 	return data
 	
 		
-
-def wright_language_file(name_file, new_language):
-	try:
-		with open(name_file, 'a') as f:
-			f.write(new_language)
-			print('Done')
-	except FileNotFoundError:
-		new_language_file(name_file)
-
 def new_lang(file_name):
-	new = new_hello_words()
-	test = read_language_file(file_name,new[0])
-	if test != False:
-		new = to_str(new)
-		wright_language_file(file_name, new)
-		print('Готово!')
-	else:
-		print('увы это сокращение уже есть')
+	'''функция для вызова в основной программе
+		!требует рефракторинга!'''
+	lang_file = __read_language_file(file_name)
+	count = 0
+	while True:
+		count+=1
+		mini = __mini_name()
+		if __find_mini(lang_file, mini) == None:
+			break
+		elif count >= 5:
+			print('not now')
+			return
+	new = __new_hello_words(mini)
+	new = __to_str(new)
+	__wright_language_file(file_name, new)
+	print('Готово!')
+
+
+
 
 if __name__ == '__main__':
-	new_lang('datafile.txt')
-else:
-	print('модуль импортирован')
+	print('работает только из hello_sec.py')
 
+	
+		

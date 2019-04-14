@@ -1,3 +1,2 @@
 ru,доброй ночи,доброго утра,доброго дня,доброго вечера
 en,good night,good morning,good day,good evening
-
