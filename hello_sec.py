@@ -19,9 +19,9 @@ def deco(message=''):
     def counter(func, count_max=5):
         '''decorator. if return == None - want to input another 1st arg'''
         def wrapper(*args):
-
-            count = 1
-            while count <= count_max:
+            args = [*args]
+            count = 0
+            while count < count_max:
                 count += 1
                 if args[0].lower() == 'exit':
                     return
