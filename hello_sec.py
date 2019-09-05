@@ -111,9 +111,11 @@ if __name__ == '__main__':
     key = get_time()
     data = data_test(args.dict)
     if data:
-        data = read_file(data)
-        data = hello_list_str(args.lang, data)
-        data = hello_words_list(data)
-        data = get_hello_word(data, key)
-        message = prepare_to_print(data)
-        print(message if message else 'Nothing to print')
+        read_data = read_file(data)
+        hello_list = hello_list_str(args.lang, read_data)
+        words_list = hello_words_list(hello_list)
+        final_word = get_hello_word(words_list, key)
+        message = prepare_to_print(final_word)
+        print(message or 'Nothing to print')
+    else:
+        print('please, check dict')
